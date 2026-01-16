@@ -1,0 +1,8 @@
+RewriteEngine on
+
+RewriteBase /Loyalty%20Points%20System/public
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule ^(.*) index.php [L]
