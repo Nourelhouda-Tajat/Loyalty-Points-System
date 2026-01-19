@@ -1,15 +1,18 @@
 <?php
+namespace App\Controllers;
+
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
+class HomeController {
 
-class HomeController{
-    
     public function index(){
-        $loader = new filesystemLoader(__DIR__ . '/../views');
+        $loader = new FilesystemLoader(__DIR__ . '/../views');
         $twig = new Environment($loader);
-        echo $this->twig->render('home.twig');
+
+        echo $twig->render('home.html.twig');
     }
 }
+
 
 ?>

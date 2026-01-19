@@ -1,27 +1,41 @@
 <?php
-class Router {
-    private $url;
+namespace Core;
+class Router
+{
     private $routes = [];
+    private $method;
+    private $uri;
 
-    public function __construct(){
-        $this->url=parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-    }
-    public function add($path, $controller, $method){
-        $this->routes[$path]= [$controller, $method];
+    public function __construct()
+    {
+        $this->method = $_SERVER['REQUEST_METHOD'];
+
+        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+        $basePath = '/Loyalty%20Points%20System/public';
+        $uri = str_replace($basePath, '', $uri);
+
+        $uri = rtrim($uri, '/');
+        $this->uri = $uri ?: '/';
     }
 
-    public function run(){
-        $uri=$this->url;
-        if (isset($this->routes[$uri])) {
-            [$controllerName, $method]= $this->routes[$uri];
-            $controller=new $controllerName();
-            $controller->$method();
-        } else {
-            http_response_code(404);
-            echo "page not found";
+    public function add($method, $path, $controller, $action)
+    {
+        $this->routes[$method][$path] = [$controller, $action];
+    }
+
+    public function run()
+    {
+        if (isset($this->routes[$this->method][$this->uri])) {
+            [$controllerName, $action] = $this->routes[$this->method][$this->uri];
+            $controller = new $controllerName();
+            $controller->$action();
+            return;
         }
+
+        http_response_code(404);
+        echo "page not found";
     }
-
-
 }
+
 ?>

@@ -1,0 +1,24 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block content %}
+<h1>Connexion</h1>
+<p class="subtitle">Accédez à votre compte fidélité</p>
+
+<form method="POST" action="/login" class="checkout-form">
+
+    <div class="form-group">
+        <label>Email</label>
+        <input type="email" name="email" required>
+    </div>
+
+    <div class="form-group">
+        <label>Mot de passe</label>
+        <input type="password" name="password" required>
+    </div>
+
+    <button class="btn btn-primary btn-full">Se connecter</button>
+
+</form>
+{% endblock %}
