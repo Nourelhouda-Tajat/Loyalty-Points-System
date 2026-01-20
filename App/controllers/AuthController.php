@@ -1,5 +1,5 @@
 <?php
-namespace APP\Controllers;
+namespace App\Controllers;
 
 use App\Models\User;
 use App\Repositories\UserRepository;
@@ -22,14 +22,23 @@ class AuthController {
     }
 
     public function register(){
-        $passwordHashed=password_hash($_POST['password'], PASSWORD_DEFAULT);
+        $email= $_POST['email'];
+        $name= $_POST['name'];
+        $pw = $_POST['password'];
+
+        if($this->userRepo->findByEmail($email)){
+            echo $this->twig->render('register.html.twig', [ 'error'=> 'Email exist']);
+            return;
+        }
+
+        $passwordHashed=password_hash($pw , PASSWORD_DEFAULT);
         $user = new User(
-            $_POST['email'],
+            $email,
             $passwordHashed,
-            $_POST['name']
+            $name
         );
         $this->userRepo->save($user);
-        header('Location: /login');
+        // header('Location: /login');
     }
 
     public function loginForm() {
@@ -40,7 +49,7 @@ class AuthController {
         $user = $this->userRepo->findByEmail($_POST['email']);
         if($user && password_verify($_POST['password'], $user->getPasswordHash())){
             $_SESSION['user_id']= $user->getId();
-            header('Location: /');
+            // header('Location: /');
         }else {
             echo "Email or password invalid";
         }
