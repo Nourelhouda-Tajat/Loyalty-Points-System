@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}ShopEasy{% endblock %}</title>
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="{{ base_path }}/style.css">
     {% block stylesheets %}{% endblock %}
 </head>
 <body>
     <header class="header">
         <div class="container">
-            <a href="/shop" class="logo">ShopEasy</a>
+            <a href="{{ base_path }}/shop" class="logo">ShopEasy</a>
             <nav class="nav">
                 <span class="user-info">
                     {{ user.name }}
                     <span class="points-badge">{{ user.loyalty_points }} points</span>
                 </span>
-                <a href="/shop/cart" class="cart-link{% if app.current_route == 'cart' %} active{% endif %}">
+                <a href="{{ base_path }}/shop/cart" class="cart-link{% if app.current_route == 'cart' %} active{% endif %}">
                     Panier
                     {% if cart_count > 0 %}
                         <span class="cart-count">{{ cart_count }}</span>
