@@ -1,22 +1,24 @@
 <?php
+namespace App\Controllers;
 
+use App\Models\Cart;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
 class ShopController
 {
    
-    private \Twig\Environment $twig;
+    private  $twig;
     private Cart $cart;
     private array $products;
 
     
     public function __construct()
     {
-        session_start();
-        $this->userRepo = new UserRepository();
+        $this->cart = new Cart();
         $loader = new FilesystemLoader(__DIR__ . '/../views');
         $this->twig = new Environment($loader);
         $this->twig->addGlobal('base_path', BASE_URL);
-        $this->cart = new Cart();
         $this->products = [
             1 => [
                 'id' => 1,
@@ -73,7 +75,7 @@ class ShopController
 
     public function index(): void
     {
-        echo $this->twig->render('shop/index.html.twig', array_merge(
+        echo $this->twig->render('index.html.twig', array_merge(
             $this->getCommonData(),
             ['products' => $this->products]
         ));
@@ -81,7 +83,7 @@ class ShopController
 
     public function cart(): void
     {
-        echo $this->twig->render('shop/cart.html.twig', array_merge(
+        echo $this->twig->render('cart.html.twig', array_merge(
             $this->getCommonData(),
             [
                 'cart_items' => $this->cart->getItems(),
@@ -155,7 +157,7 @@ class ShopController
         $checkoutError = $_SESSION['checkout_error'] ?? null;
         unset($_SESSION['checkout_error']);
 
-        echo $this->twig->render('shop/checkout.html.twig', array_merge(
+        echo $this->twig->render('checkout.html.twig', array_merge(
             $this->getCommonData(),
             [
                 'cart_items' => $this->cart->getItems(),
@@ -217,7 +219,7 @@ class ShopController
             exit;
         }
 
-        echo $this->twig->render('shop/purchase_result.html.twig', array_merge(
+        echo $this->twig->render('purchase_result.html.twig', array_merge(
             $this->getCommonData(),
             ['purchase' => $_SESSION['last_purchase']]
         ));

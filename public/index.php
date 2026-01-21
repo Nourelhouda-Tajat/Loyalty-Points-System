@@ -5,6 +5,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Core\Router;
 use App\Controllers\AuthController;
 use App\Controllers\HomeController;
+use App\Controllers\ShopController;
 
 $router = new Router();
 
@@ -23,8 +24,8 @@ $router->add('GET', '/logout', AuthController::class, 'logout');
 
 //shop
 $router->add('GET', '/shop', ShopController::class, 'index');
-$router->add('GET', '/shop/card', ShopController::class, 'cart');
-$router->add('POST', '/shop/card-to-cart', ShopController::class, 'addToCart');
+$router->add('GET', '/shop/cart', ShopController::class, 'cart');
+$router->add('POST', '/shop/cart-to-cart', ShopController::class, 'addToCart');
 $router->add('POST', '/shop/update-cart', ShopController::class, 'updateCart');
 $router->add('POST', '/shop/remove-from-cart', ShopController::class, 'removeFromCart');
 $router->add('GET', '/shop/checkout', ShopController::class, 'checkout');
