@@ -16,7 +16,7 @@
                 <h3 class="product-name">{{ product.name }}</h3>
                 <p class="product-description">{{ product.description }}</p>
                 <p class="product-price">{{ product.price|number_format(2, '.', ' ') }} $</p>
-                <form action="/add-to-cart" method="POST" class="add-to-cart-form">
+                <form action="{{ base_path }}/add-to-cart" method="POST" class="add-to-cart-form">
                     <input type="hidden" name="product_id" value="{{ product.id }}">
                     <div class="quantity-input">
                         <label for="qty-{{ product.id }}">Qté:</label>

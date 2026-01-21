@@ -17,7 +17,7 @@ $router->add('GET', '/', ShopController::class, 'index');
 
 //shop
 $router->add('GET', '/cart', ShopController::class, 'cart');
-$router->add('POST', '/cart-to-cart', ShopController::class, 'addToCart');
+$router->add('POST', '/add-to-cart', ShopController::class, 'addToCart');
 $router->add('POST', '/update-cart', ShopController::class, 'updateCart');
 $router->add('POST', '/remove-from-cart', ShopController::class, 'removeFromCart');
 $router->add('GET', '/checkout', ShopController::class, 'checkout');

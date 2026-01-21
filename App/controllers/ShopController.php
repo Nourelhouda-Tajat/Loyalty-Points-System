@@ -100,7 +100,7 @@ class ShopController
     }
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /');
+            header('Location:' . BASE_URL . '/cart' );
             exit;
         }
 
@@ -117,14 +117,14 @@ class ShopController
             );
         }
 
-        header('Location: /cart');
+        header('Location : ' . BASE_URL . '/cart');
         exit;
     }
 
     public function updateCart(): void
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /cart');
+            header('Location: ' . BASE_URL . '/cart');
             exit;
         }
 
@@ -133,21 +133,21 @@ class ShopController
 
         $this->cart->updateQuantity($productId, $quantity);
 
-        header('Location: /cart');
+        header('Location: ' . BASE_URL . '/cart');
         exit;
     }
 
     public function removeFromCart(): void
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /cart');
+            header('Location: ' . BASE_URL . '/cart');
             exit;
         }
 
         $productId = (int) ($_POST['product_id'] ?? 0);
         $this->cart->removeItem($productId);
 
-        header('Location: /cart');
+        header('Location: ' . BASE_URL . '/cart');
         exit;
     }
 
@@ -158,7 +158,7 @@ class ShopController
             exit;
         }
         if ($this->cart->isEmpty()) {
-            header('Location: /cart');
+            header('Location: ' . BASE_URL . '/cart');
             exit;
         }
 
@@ -179,12 +179,12 @@ class ShopController
     public function processCheckout(): void
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /shop/checkout');
+            header('Location: ' . BASE_URL . '/checkout');
             exit;
         }
 
         if ($this->cart->isEmpty()) {
-            header('Location: /shop/cart');
+            header('Location: ' . BASE_URL . '/cart');
             exit;
         }
 
@@ -195,7 +195,7 @@ class ShopController
 
         if (empty($cardName) || empty($cardNumber) || empty($cardExpiry) || empty($cardCvv)) {
             $_SESSION['checkout_error'] = 'Veuillez remplir tous les champs.';
-            header('Location: /shop/checkout');
+            header('Location: ' . BASE_URL . '/checkout');
             exit;
         }
 
@@ -216,7 +216,7 @@ class ShopController
 
         $this->cart->clear();
 
-        header('Location: /shop/purchase-result');
+        header('Location: ' . BASE_URL . '/purchase-result');
         exit;
     }
 
@@ -228,7 +228,7 @@ class ShopController
         }
 
         if (!isset($_SESSION['last_purchase'])) {
-            header('Location: /shop');
+            header('Location: ' . BASE_URL . '/');
             exit;
         }
 
