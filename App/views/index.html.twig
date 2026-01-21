@@ -3,7 +3,8 @@
 {% block title %}ShopEasy - Boutique{% endblock %}
 
 {% block content %}
-    <h1>Nos Produits</h1>
+    <h1>Bienvenue sur ShopEasy</h1>
+    <h2>Nos Produits</h2>
     <p class="subtitle">Gagnez <strong>10 points</strong> par tranche de <strong>100$</strong> dépensés !</p>
 
     <div class="products-grid">
@@ -15,7 +16,7 @@
                 <h3 class="product-name">{{ product.name }}</h3>
                 <p class="product-description">{{ product.description }}</p>
                 <p class="product-price">{{ product.price|number_format(2, '.', ' ') }} $</p>
-                <form action="/shop/add-to-cart" method="POST" class="add-to-cart-form">
+                <form action="/add-to-cart" method="POST" class="add-to-cart-form">
                     <input type="hidden" name="product_id" value="{{ product.id }}">
                     <div class="quantity-input">
                         <label for="qty-{{ product.id }}">Qté:</label>

@@ -10,13 +10,19 @@
 <body>
     <header class="header">
         <div class="container">
-            <a href="{{ base_path }}/shop" class="logo">ShopEasy</a>
+            <a href="{{ base_path }}" class="logo">ShopEasy</a>
             <nav class="nav">
-                <span class="user-info">
-                    {{ user.name }}
-                    <span class="points-badge">{{ user.loyalty_points }} points</span>
-                </span>
-                <a href="{{ base_path }}/shop/cart" class="cart-link{% if app.current_route == 'cart' %} active{% endif %}">
+                {% if user is defined and user %}
+                    <span class="user-info">
+                        Bonjour, {{ user.name|capitalize }} !
+                        <span class="points-badge">{{ user.loyalty_points }} points</span>
+                    </span>
+                    <a href="{{ base_path }}/logout" class="auth-link">logout</a>
+                {% else %}
+                    <a href="{{ base_path }}/login" class="auth-link">log in</a>
+                {% endif %}
+
+                <a href="{{ base_path }}/cart" class="cart-link{% if app.current_route == 'cart' %} active{% endif %}">
                     Panier
                     {% if cart_count > 0 %}
                         <span class="cart-count">{{ cart_count }}</span>
@@ -36,7 +42,7 @@
         <div class="container">
             <p>&copy; 2026 ShopEasy - Système de test pour formation MVC</p>
             {% block footer_extra %}
-                <a href="/shop/reset" class="reset-link">Réinitialiser la session</a>
+                <a href="{{ base_path }}/" class="reset-link">Accueil</a>
             {% endblock %}
         </div>
     </footer>

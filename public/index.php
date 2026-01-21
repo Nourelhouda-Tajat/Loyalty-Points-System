@@ -1,16 +1,28 @@
 <?php
 define('BASE_URL', '/Loyalty%20Points%20System/public');
+
+session_start();
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use Core\Router;
 use App\Controllers\AuthController;
-use App\Controllers\HomeController;
+// use App\Controllers\HomeController;
 use App\Controllers\ShopController;
 
 $router = new Router();
 
 //home
-$router->add('GET', '/', HomeController::class, 'index');
+$router->add('GET', '/', ShopController::class, 'index');
+
+//shop
+$router->add('GET', '/cart', ShopController::class, 'cart');
+$router->add('POST', '/cart-to-cart', ShopController::class, 'addToCart');
+$router->add('POST', '/update-cart', ShopController::class, 'updateCart');
+$router->add('POST', '/remove-from-cart', ShopController::class, 'removeFromCart');
+$router->add('GET', '/checkout', ShopController::class, 'checkout');
+$router->add('POST', '/process-checkout', ShopController::class, 'processCheckout');
+$router->add('GET', '/purchase-result', ShopController::class, 'purchaseResult');
 
 //authentification 
 
@@ -22,15 +34,6 @@ $router->add('POST', '/login', AuthController::class, 'login');
 
 $router->add('GET', '/logout', AuthController::class, 'logout');
 
-//shop
-$router->add('GET', '/shop', ShopController::class, 'index');
-$router->add('GET', '/shop/cart', ShopController::class, 'cart');
-$router->add('POST', '/shop/cart-to-cart', ShopController::class, 'addToCart');
-$router->add('POST', '/shop/update-cart', ShopController::class, 'updateCart');
-$router->add('POST', '/shop/remove-from-cart', ShopController::class, 'removeFromCart');
-$router->add('GET', '/shop/checkout', ShopController::class, 'checkout');
-$router->add('POST', '/shop/process-checkout', ShopController::class, 'processCheckout');
-$router->add('GET', '/shop/purchase-result', ShopController::class, 'purchaseResult');
 
 
 

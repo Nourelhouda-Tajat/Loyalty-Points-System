@@ -310,6 +310,17 @@ h1 {
     background: var(--background);
 }
 
+.auth-link {
+    margin-right: 15px;
+    text-decoration: none;
+    color: #2c3e50;
+    font-weight: bold;
+}
+
+.auth-link:hover {
+    color: #3498db;
+}
+
 .cart-table .product-name {
     font-weight: 500;
 }

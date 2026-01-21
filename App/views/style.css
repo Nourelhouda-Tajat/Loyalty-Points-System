@@ -705,6 +705,16 @@ h1 {
 .reset-link:hover {
     color: var(--primary-color);
 }
+.auth-link {
+    margin-right: 15px;
+    text-decoration: none;
+    color: #2c3e50;
+    font-weight: bold;
+}
+
+.auth-link:hover {
+    color: #3498db;
+}
 
 /* Responsive */
 @media (max-width: 768px) {

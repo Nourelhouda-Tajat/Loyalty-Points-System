@@ -11,7 +11,7 @@ class AuthController {
     private $userRepo;
 
     public function __construct(){
-        session_start();
+        // session_start();
         $this->userRepo = new UserRepository();
         $loader = new FilesystemLoader(__DIR__ . '/../views');
         $this->twig = new Environment($loader);
@@ -47,7 +47,12 @@ class AuthController {
     public function login(){
         $user = $this->userRepo->findByEmail($_POST['email']);
         if($user && password_verify($_POST['password'], $user->getPasswordHash())){
-            $_SESSION['user_id']= $user->getId();
+            $_SESSION['user']= [
+                'id' => $user->getId(),
+                'name' => $user->getName(),
+                'email' => $user->getEmail(),
+                'loyalty_points' => $user->getTotalPoints()
+            ];
             header('Location: ' . BASE_URL  . '/');
             exit;
         }else {

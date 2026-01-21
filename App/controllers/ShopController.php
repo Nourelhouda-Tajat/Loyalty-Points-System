@@ -65,38 +65,42 @@ class ShopController
         ];
     }
 
-    private function getCommonData(): array
-    {
-        return [
-            'user' => $_SESSION['user'],
-            'cart_count' => $this->cart->getCount()
-        ];
-    }
-
     public function index(): void
     {
-        echo $this->twig->render('index.html.twig', array_merge(
-            $this->getCommonData(),
-            ['products' => $this->products]
-        ));
+        $user = $_SESSION['user'] ?? null;
+        echo $this->twig->render('index.html.twig', [
+            'products' => $this->products,
+            'user' => $user,
+            'cart_count' => $this->cart->getCount()
+            ]
+        );
     }
 
     public function cart(): void
     {
-        echo $this->twig->render('cart.html.twig', array_merge(
-            $this->getCommonData(),
+        if (!isset($_SESSION['user'])) {
+            header('Location: ' . BASE_URL . '/login');
+            exit;
+        }
+        echo $this->twig->render('cart.html.twig',
             [
+                'user' => $_SESSION['user'],
                 'cart_items' => $this->cart->getItems(),
                 'cart_total' => $this->cart->getTotal(),
                 'loyalty_points' => $this->cart->calculateLoyaltyPoints()
             ]
-        ));
+        );
     }
 
     public function addToCart(): void
     {
+        if (!isset($_SESSION['user'])) {
+        header('Location: ' . BASE_URL . '/login');
+        exit;
+    }
+
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /shop');
+            header('Location: /');
             exit;
         }
 
@@ -113,14 +117,14 @@ class ShopController
             );
         }
 
-        header('Location: /shop/cart');
+        header('Location: /cart');
         exit;
     }
 
     public function updateCart(): void
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /shop/cart');
+            header('Location: /cart');
             exit;
         }
 
@@ -129,43 +133,47 @@ class ShopController
 
         $this->cart->updateQuantity($productId, $quantity);
 
-        header('Location: /shop/cart');
+        header('Location: /cart');
         exit;
     }
 
     public function removeFromCart(): void
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /shop/cart');
+            header('Location: /cart');
             exit;
         }
 
         $productId = (int) ($_POST['product_id'] ?? 0);
         $this->cart->removeItem($productId);
 
-        header('Location: /shop/cart');
+        header('Location: /cart');
         exit;
     }
 
     public function checkout(): void
     {
+        if (!isset($_SESSION['user'])) {
+            header('Location: ' . BASE_URL . '/login');
+            exit;
+        }
         if ($this->cart->isEmpty()) {
-            header('Location: /shop/cart');
+            header('Location: /cart');
             exit;
         }
 
         $checkoutError = $_SESSION['checkout_error'] ?? null;
         unset($_SESSION['checkout_error']);
 
-        echo $this->twig->render('checkout.html.twig', array_merge(
-            $this->getCommonData(),
+        echo $this->twig->render('checkout.html.twig', 
             [
+                'user' => $_SESSION['user'],
                 'cart_items' => $this->cart->getItems(),
                 'cart_total' => $this->cart->getTotal(),
                 'loyalty_points' => $this->cart->calculateLoyaltyPoints(),
                 'checkout_error' => $checkoutError
             ]
-        ));
+        );
     }
 
     public function processCheckout(): void
@@ -214,14 +222,20 @@ class ShopController
 
     public function purchaseResult(): void
     {
+        if (!isset($_SESSION['user'])) {
+            header('Location: ' . BASE_URL . '/login');
+            exit;
+        }
+
         if (!isset($_SESSION['last_purchase'])) {
             header('Location: /shop');
             exit;
         }
 
-        echo $this->twig->render('purchase_result.html.twig', array_merge(
-            $this->getCommonData(),
-            ['purchase' => $_SESSION['last_purchase']]
-        ));
+        echo $this->twig->render('purchase_result.html.twig',
+            [
+                'user' => $_SESSION['user'],        
+                'purchase' => $_SESSION['last_purchase']
+            ]);
     }
 }
