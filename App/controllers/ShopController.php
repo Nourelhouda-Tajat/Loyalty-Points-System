@@ -9,11 +9,14 @@ class ShopController
     private array $products;
 
     
-    public function __construct(\Twig\Environment $twig)
+    public function __construct()
     {
-        $this->twig = $twig;
+        session_start();
+        $this->userRepo = new UserRepository();
+        $loader = new FilesystemLoader(__DIR__ . '/../views');
+        $this->twig = new Environment($loader);
+        $this->twig->addGlobal('base_path', BASE_URL);
         $this->cart = new Cart();
-        
         $this->products = [
             1 => [
                 'id' => 1,

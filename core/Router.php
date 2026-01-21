@@ -12,9 +12,8 @@ class Router
 
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-        $basePath = '/Loyalty%20Points%20System/public';
+        $basePath = BASE_URL;
         $uri = str_replace($basePath, '', $uri);
-
         $uri = rtrim($uri, '/');
         $this->uri = $uri ?: '/';
     }
