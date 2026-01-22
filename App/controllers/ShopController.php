@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Models\Cart;
+use App\Repositories\PointsRepository;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
@@ -15,10 +16,21 @@ class ShopController
     
     public function __construct()
     {
-        $this->cart = new Cart();
+        // $this->cart = new Cart();
+        // $loader = new FilesystemLoader(__DIR__ . '/../views');
+        // $this->twig = new Environment($loader);
+        // $this->twig->addGlobal('base_path', BASE_URL);
+        // session_start();
+        if (!isset($_SESSION['cart']) || !is_array($_SESSION['cart'])) {
+            $_SESSION['cart'] = [];
+        }
+
+        $this->cart = new Cart($_SESSION['cart']);
         $loader = new FilesystemLoader(__DIR__ . '/../views');
         $this->twig = new Environment($loader);
         $this->twig->addGlobal('base_path', BASE_URL);
+
+
         $this->products = [
             1 => [
                 'id' => 1,
@@ -116,8 +128,8 @@ class ShopController
                 $quantity
             );
         }
-
-        header('Location : ' . BASE_URL . '/cart');
+        $_SESSION['cart'] = $this->cart->toArray(); 
+        header('Location: ' . BASE_URL . '/cart');
         exit;
     }
 
@@ -133,6 +145,7 @@ class ShopController
 
         $this->cart->updateQuantity($productId, $quantity);
 
+        $_SESSION['cart'] = $this->cart->toArray();
         header('Location: ' . BASE_URL . '/cart');
         exit;
     }
@@ -146,6 +159,8 @@ class ShopController
 
         $productId = (int) ($_POST['product_id'] ?? 0);
         $this->cart->removeItem($productId);
+
+        $_SESSION['cart'] = $this->cart->toArray();
 
         header('Location: ' . BASE_URL . '/cart');
         exit;
@@ -201,21 +216,30 @@ class ShopController
 
         $cartTotal = $this->cart->getTotal();
         $pointsEarned = $this->cart->calculateLoyaltyPoints();
+        $userId = $_SESSION['user']['id'];
+
+        $pointsRepo = new PointsRepository();
         $previousPoints = $_SESSION['user']['loyalty_points'];
 
-        $_SESSION['user']['loyalty_points'] += $pointsEarned;
+        $newPoints = $pointsRepo->addPoints(
+            $userId,
+            $pointsEarned,
+            'Achat effectué'
+        );
+
+        $_SESSION['user']['loyalty_points'] += $newPoints;
 
         $_SESSION['last_purchase'] = [
             'items' => $this->cart->getItems(),
             'total' => $cartTotal,
             'points_earned' => $pointsEarned,
             'previous_points' => $previousPoints,
-            'new_points' => $_SESSION['user']['loyalty_points'],
+            'new_points' => $newPoints,
             'date' => date('Y-m-d H:i:s')
         ];
 
         $this->cart->clear();
-
+        $_SESSION['cart'] = [];
         header('Location: ' . BASE_URL . '/purchase-result');
         exit;
     }

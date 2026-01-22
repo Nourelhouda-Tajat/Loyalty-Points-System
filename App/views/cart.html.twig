@@ -29,7 +29,7 @@
                             <td class="product-name">{{ item.name }}</td>
                             <td>{{ item.price|number_format(2, '.', ' ') }} $</td>
                             <td>
-                                <form action="/shop/update-cart" method="POST" class="update-qty-form">
+                                <form action="{{ base_path }}/update-cart" method="POST" class="update-qty-form">
                                     <input type="hidden" name="product_id" value="{{ item.id }}">
                                     <input type="number" name="quantity" value="{{ item.quantity }}" min="0" max="99" class="qty-input">
                                     <button type="submit" class="btn btn-small">Mettre à jour</button>
@@ -37,7 +37,7 @@
                             </td>
                             <td class="subtotal">{{ (item.price * item.quantity)|number_format(2, '.', ' ') }} $</td>
                             <td>
-                                <form action="/shop/remove-from-cart" method="POST" class="remove-form">
+                                <form action="{{ base_path }}/remove-from-cart" method="POST" class="remove-form">
                                     <input type="hidden" name="product_id" value="{{ item.id }}">
                                     <button type="submit" class="btn btn-danger btn-small">Supprimer</button>
                                 </form>
@@ -59,8 +59,8 @@
                 <p class="points-info">10 points par tranche de 100$ dépensés</p>
                 
                 <div class="cart-actions">
-                    <a href="/shop" class="btn btn-secondary">Continuer mes achats</a>
-                    <a href="/shop/checkout" class="btn btn-primary btn-large">Passer la commande</a>
+                    <a href="{{ base_path }}" class="btn btn-secondary">Continuer mes achats</a>
+                    <a href="{{ base_path }}/checkout" class="btn btn-primary btn-large">Passer la commande</a>
                 </div>
             </div>
         </div>

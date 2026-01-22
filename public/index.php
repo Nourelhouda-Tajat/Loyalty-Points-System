@@ -7,7 +7,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use Core\Router;
 use App\Controllers\AuthController;
-// use App\Controllers\HomeController;
+use App\Controllers\DashboardController;
 use App\Controllers\ShopController;
 
 $router = new Router();
@@ -34,6 +34,8 @@ $router->add('POST', '/login', AuthController::class, 'login');
 
 $router->add('GET', '/logout', AuthController::class, 'logout');
 
+// dashboard
+$router->add('GET', '/dashboard', DashboardController::class, 'index');
 
 
 

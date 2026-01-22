@@ -422,6 +422,102 @@ h1 {
     gap: 30px;
 }
 
+/* ================= DASHBOARD ================= */
+
+.dashboard {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.dashboard-header {
+    margin-bottom: 30px;
+}
+
+.dashboard-subtitle {
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.stat-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 25px;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.stat-card h3 {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.stat-card.secondary {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+}
+.dashboard-history {
+    background: var(--surface);
+    padding: 25px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.dashboard-history h2 {
+    margin-bottom: 20px;
+}
+
+.empty-history {
+    color: var(--text-secondary);
+    text-align: center;
+    padding: 30px 0;
+}
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.history-table th,
+.history-table td {
+    padding: 14px;
+    border-bottom: 1px solid var(--border-color);
+    text-align: left;
+}
+
+.history-table th {
+    background: var(--background);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
+.history-table tbody tr:hover {
+    background: var(--background);
+}
+
+.points-earned {
+    color: var(--success-color);
+    font-weight: 600;
+}
+
+
 @media (max-width: 900px) {
     .checkout-layout {
         grid-template-columns: 1fr;
@@ -754,4 +850,13 @@ h1 {
     .cart-actions .btn {
         width: 100%;
     }
+    .dashboard-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .history-table {
+        display: block;
+        overflow-x: auto;
+    }
+
 }

@@ -1,47 +1,36 @@
 <?php
 namespace App\Models;
 
-class Cart {
+class Cart
+{
     private array $items = [];
 
-    public function addItem(int $id, string $name, float $price, int $quantity): void {
-        $this->items[$id] = [
-            'id' => $id,
-            'name' => $name,
-            'price' => $price,
-            'quantity' => $quantity
-        ];
-    }
-
-    public function getItems(): array {
-        return $this->items;
-    }
-
-    public function getCount(): int {
-        return count($this->items);
-    }
-
-    public function getTotal(): float {
-        $total = 0;
-        foreach ($this->items as $item) {
-            $total += $item['price'] * $item['quantity'];
+    public function __construct($items = [])
+    {
+        // 🔒 Sécurité anti __PHP_Incomplete_Class
+        if (is_array($items)) {
+            $this->items = $items;
+        } else {
+            $this->items = [];
         }
-        return $total;
     }
 
-    public function calculateLoyaltyPoints(): int {
-        return (int) floor($this->getTotal() / 100) * 10;
+    public function addItem(int $id, string $name, float $price, int $quantity): void
+    {
+        if (isset($this->items[$id])) {
+            $this->items[$id]['quantity'] += $quantity;
+        } else {
+            $this->items[$id] = [
+                'id'       => $id,
+                'name'     => $name,
+                'price'    => $price,
+                'quantity' => $quantity
+            ];
+        }
     }
 
-    public function isEmpty(): bool {
-        return empty($this->items);
-    }
-
-    public function clear(): void {
-        $this->items = [];
-    }
-
-    public function updateQuantity(int $id, int $quantity): void {
+    public function updateQuantity(int $id, int $quantity): void
+    {
         if ($quantity <= 0) {
             unset($this->items[$id]);
         } elseif (isset($this->items[$id])) {
@@ -49,7 +38,43 @@ class Cart {
         }
     }
 
-    public function removeItem(int $id): void {
+    public function removeItem(int $id): void
+    {
         unset($this->items[$id]);
+    }
+
+    public function clear(): void
+    {
+        $this->items = [];
+    }
+
+    public function getItems(): array
+    {
+        return $this->items;
+    }
+
+    public function toArray(): array
+    {
+        return $this->items;
+    }
+
+    public function getCount(): int
+    {
+        return array_sum(array_column($this->items, 'quantity'));
+    }
+
+    public function getTotal(): float
+    {
+        return array_reduce($this->items, fn($t, $i) => $t + ($i['price'] * $i['quantity']), 0);
+    }
+
+    public function calculateLoyaltyPoints(): int
+    {
+        return (int) floor($this->getTotal() / 100) * 10;
+    }
+
+    public function isEmpty(): bool
+    {
+        return empty($this->items);
     }
 }
