@@ -9,6 +9,8 @@ use Core\Router;
 use App\Controllers\AuthController;
 use App\Controllers\DashboardController;
 use App\Controllers\ShopController;
+use App\Controllers\RewardController;
+
 
 $router = new Router();
 
@@ -36,7 +38,9 @@ $router->add('GET', '/logout', AuthController::class, 'logout');
 
 // dashboard
 $router->add('GET', '/dashboard', DashboardController::class, 'index');
-
+// rewards
+$router->add('GET', '/rewards', RewardController::class, 'index');
+$router->add('POST', '/redeem-reward', RewardController::class, 'redeem'); 
 
 
 $router->run();

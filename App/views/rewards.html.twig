@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rewards - ShopEasy{% endblock %}
+
+{% block content %}
+<h1>Rewards</h1>
+
+{% if success %}
+    <div class="alert alert-success">
+        {{ success }}
+    </div>
+{% endif %}
+
+<p class="subtitle">
+    Mes points : <strong>{{ points }}</strong>
+</p>
+
+<div class="products-grid">
+    {% for reward in rewards %}
+        <div class="product-card">
+            <div class="product-image">
+                <span class="product-icon">🎁</span>
+            </div>
+
+            <h3 class="product-name">{{ reward.name }}</h3>
+            <p class="product-description">{{ reward.description }}</p>
+            
+            <p class="product-price">
+                Coût : <strong>{{ reward.points_required }}</strong> points
+                {% if reward.stock >= 0 %}
+                    <br><small>Stock : {{ reward.stock == -1 ? 'Illimité' : reward.stock }}</small>
+                {% endif %}
+            </p>
+
+            {% if points >= reward.points_required %}
+                <form action="{{ base_path }}/redeem-reward" method="POST">
+                    <input type="hidden" name="reward_id" value="{{ reward.id }}">
+                    <button class="btn btn-primary btn-full">Échanger</button>
+                </form>
+            {% else %}
+                <button class="btn btn-secondary btn-full" disabled>
+                    Points insuffisants
+                </button>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -812,6 +812,19 @@ h1 {
 .reset-link:hover {
     color: var(--primary-color);
 }
+.alert {
+    padding: 15px 20px;
+    margin: 15px 0;
+    border-radius: 8px;
+    font-weight: 500;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+.alert-success {
+    background-color: #1b70da;
+    color: #1e7e5a;
+    border: 1px solid #9fe2c3;
+}
 
 /* Responsive */
 @media (max-width: 768px) {

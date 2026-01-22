@@ -7,7 +7,6 @@ class Cart
 
     public function __construct($items = [])
     {
-        // 🔒 Sécurité anti __PHP_Incomplete_Class
         if (is_array($items)) {
             $this->items = $items;
         } else {
